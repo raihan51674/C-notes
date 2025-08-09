@@ -1,4 +1,5 @@
-```cs
+# Uswer polimorphisom
+ ```cs
 using System;
 using System.Collections.Generic;
 
@@ -80,6 +81,136 @@ namespace VehicleApp
             {
                 v.ShowDetails();
                 Console.WriteLine("----------------------------");
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
+
+```
+## use Abstraction 
+```cs
+using System;
+using System.Collections.Generic;
+
+namespace VehicleApp
+{
+    abstract class Vehicle
+    {
+        public string ModelNo { get; set; }
+        public double Mileage { get; set; }
+        public double CC { get; set; }
+
+        public Vehicle(string modelNo, double mileage, double cc)
+        {
+            ModelNo = modelNo;
+            Mileage = mileage;
+            CC = cc;
+        }
+
+        public abstract void ShowDetails();
+
+        public double CalculateDualConsumption()
+        {
+            return CC * Mileage;
+        }
+    }
+
+    class Car : Vehicle
+    {
+        public Car(string modelNo, double mileage, double cc)
+            : base(modelNo, mileage, cc) { }
+
+        public override void ShowDetails()
+        {
+            Console.WriteLine("🚗 Car Details:");
+            Console.WriteLine($"Model No: {ModelNo}");
+            Console.WriteLine($"Mileage: {Mileage} km/l");
+            Console.WriteLine($"CC: {CC}");
+            Console.WriteLine($"Dual Consumption: {CalculateDualConsumption()}");
+        }
+    }
+
+    class Truck : Vehicle
+    {
+        public Truck(string modelNo, double mileage, double cc)
+            : base(modelNo, mileage, cc) { }
+
+        public override void ShowDetails()
+        {
+            Console.WriteLine("🚚 Truck Details:");
+            Console.WriteLine($"Model No: {ModelNo}");
+            Console.WriteLine($"Mileage: {Mileage} km/l");
+            Console.WriteLine($"CC: {CC}");
+            Console.WriteLine($"Dual Consumption: {CalculateDualConsumption()}");
+        }
+    }
+
+    class Bus : Vehicle
+    {
+        public Bus(string modelNo, double mileage, double cc)
+            : base(modelNo, mileage, cc) { }
+
+        public override void ShowDetails()
+        {
+            Console.WriteLine("🚌 Bus Details:");
+            Console.WriteLine($"Model No: {ModelNo}");
+            Console.WriteLine($"Mileage: {Mileage} km/l");
+            Console.WriteLine($"CC: {CC}");
+            Console.WriteLine($"Dual Consumption: {CalculateDualConsumption()}");
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Vehicle> vehicles = new List<Vehicle>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine("Enter vehicle type (car/truck/bus): ");
+                string type = Console.ReadLine().Trim().ToLower();
+
+                Console.Write("Enter Model No: ");
+                string modelNo = Console.ReadLine();
+
+                Console.Write("Enter Mileage (km/l): ");
+                double mileage = Convert.ToDouble(Console.ReadLine());
+
+                Console.Write("Enter CC: ");
+                double cc = Convert.ToDouble(Console.ReadLine());
+
+                Vehicle vehicle = null;
+
+                switch (type)
+                {
+                    case "car":
+                        vehicle = new Car(modelNo, mileage, cc);
+                        break;
+                    case "truck":
+                        vehicle = new Truck(modelNo, mileage, cc);
+                        break;
+                    case "bus":
+                        vehicle = new Bus(modelNo, mileage, cc);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid vehicle type! Try again.");
+                        i--; // decrement to repeat input for this iteration
+                        continue;
+                }
+
+                vehicles.Add(vehicle);
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Vehicle Details:\n");
+
+            foreach (var v in vehicles)
+            {
+                v.ShowDetails();
+                Console.WriteLine("-----------------------------");
             }
 
             Console.ReadLine();
